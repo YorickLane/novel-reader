@@ -28,4 +28,25 @@ coverage
 *.sln
 *.sw?
 
+# Claude settings
+.claude/
+
 *.tsbuildinfo
+
+# Private content - NSFW/Adult content protection
+/content-private/
+*.nsfw
+*.adult
+*.private
+.adult-content/
+/private/
+*.encrypted
+
+# User-generated content
+/user-content/
+/exports/*.zip
+/exports/*.enc
+
+# Temporary files
+.tmp/
+.cache/

@@ -10,8 +10,11 @@ export interface Book {
   lastReadDate?: Date
   fileSize: number
   format: 'txt' | 'epub' | 'pdf'
-  rating?: 'G' | 'PG-13' | 'R-18'
+  rating?: 'G' | 'PG-13' | 'R-18' | 'R-21'
   isAdult?: boolean
+  isEncrypted?: boolean
+  themes?: string[]
+  warnings?: string[]
 }
 
 export interface Chapter {
@@ -20,6 +23,7 @@ export interface Chapter {
   chapterIndex: number
   title: string
   content: string
+  isEncrypted?: boolean
 }
 
 export interface ReadingProgress {

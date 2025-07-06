@@ -56,18 +56,34 @@
       <p class="text-sm mt-2">点击上方按钮添加你的第一本书</p>
     </div>
 
-    <div v-else-if="books.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+    <div v-else-if="displayedBooks.length > 0" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
       <div
-        v-for="book in books"
+        v-for="book in displayedBooks"
         :key="book.id"
         class="book-item group relative bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer overflow-hidden"
         @click="openBook(book.id!)"
       >
         <!-- 封面占位符 -->
-        <div class="aspect-[3/4] bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+        <div class="aspect-[3/4] bg-gradient-to-br flex items-center justify-center relative"
+          :class="book.isAdult ? 'from-purple-500 to-pink-500' : 'from-blue-400 to-purple-500'">
           <svg class="w-16 h-16 text-white opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
+          
+          <!-- 成人内容标记 -->
+          <div v-if="book.isAdult" class="absolute top-2 left-2">
+            <span class="px-2 py-1 bg-red-600 text-white text-xs font-bold rounded">
+              {{ book.rating || 'R-18' }}
+            </span>
+          </div>
+          
+          <!-- 模糊效果（普通模式下） -->
+          <div v-if="book.isAdult && !privacyStore.canAccessAdultContent && privacyStore.blurCovers"
+            class="absolute inset-0 backdrop-blur-md bg-black bg-opacity-30 flex items-center justify-center">
+            <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
         </div>
         
         <!-- 书籍信息 -->
@@ -89,17 +105,43 @@
         </button>
       </div>
     </div>
+    
+    <!-- 隐私模式提示 -->
+    <div v-if="books.length > displayedBooks.length" class="mt-8 text-center p-4 bg-purple-50 rounded-lg">
+      <p class="text-purple-800">
+        <svg class="inline-block w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        有 {{ books.length - displayedBooks.length }} 本私密书籍已隐藏。
+        <button @click="$router.push('/privacy')" class="text-purple-600 hover:text-purple-800 underline ml-1">
+          开启隐私模式查看
+        </button>
+      </p>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useBookStorage } from '@/composables/useBookStorage'
+import { usePrivacyStore } from '@/stores/privacy'
 import type { Book } from '@/services/database'
 
 const router = useRouter()
+const privacyStore = usePrivacyStore()
 const { books, loading, error, addBook, fetchBooks, deleteBook } = useBookStorage()
+
+// 过滤显示的书籍
+const displayedBooks = computed(() => {
+  if (privacyStore.canAccessAdultContent) {
+    // 隐私模式下显示所有内容
+    return books.value
+  }
+  
+  // 普通模式下过滤成人内容
+  return books.value.filter(book => !book.isAdult)
+})
 
 onMounted(() => {
   fetchBooks()
