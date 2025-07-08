@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import { ref, watch } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { usePrivacyStore } from '@/stores/privacy'
 import AdultContentGuard from '@/components/AdultContentGuard.vue'
 
@@ -16,24 +16,46 @@ const handleUserActivity = () => {
 
 // 切换隐私模式
 const togglePrivacyMode = () => {
+  console.log('[App] togglePrivacyMode 被调用')
+  console.log('[App] 当前隐私模式状态:', privacyStore.isPrivacyMode)
+  
   if (!privacyStore.isPrivacyMode) {
+    console.log('[App] 显示认证对话框')
     showAuthDialog.value = true
   } else {
+    console.log('[App] 关闭隐私模式')
     privacyStore.disablePrivacyMode()
   }
 }
 
 // 处理认证成功
 const handleAuthSuccess = (password: string) => {
+  console.log('[App] 认证成功，启用隐私模式')
   privacyStore.enablePrivacyMode(password)
   showAuthDialog.value = false
 }
 
-// 添加活动监听
-if (typeof window !== 'undefined') {
+// 处理自定义事件
+const handleTogglePrivacyEvent = () => {
+  console.log('[App] 收到 toggle-privacy-mode 事件')
+  togglePrivacyMode()
+}
+
+// 在组件挂载后添加事件监听
+onMounted(() => {
+  console.log('[App] 组件已挂载，添加事件监听器')
   window.addEventListener('mousemove', handleUserActivity)
   window.addEventListener('keypress', handleUserActivity)
-}
+  window.addEventListener('toggle-privacy-mode', handleTogglePrivacyEvent)
+})
+
+// 在组件卸载时清理事件监听
+onUnmounted(() => {
+  console.log('[App] 组件卸载，清理事件监听器')
+  window.removeEventListener('mousemove', handleUserActivity)
+  window.removeEventListener('keypress', handleUserActivity)
+  window.removeEventListener('toggle-privacy-mode', handleTogglePrivacyEvent)
+})
 </script>
 
 <template>

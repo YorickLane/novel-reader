@@ -39,7 +39,7 @@ export function useBookStorage() {
   }
 
   // 添加书籍
-  const addBook = async (file: File) => {
+  const addBook = async (file: File, options?: { isAdult?: boolean; rating?: string }) => {
     loading.value = true
     error.value = null
     
@@ -58,7 +58,8 @@ export function useBookStorage() {
         addedDate: new Date(),
         fileSize: file.size,
         format: 'txt', // 暂时只支持 txt
-        rating: 'G' // 默认全年龄
+        rating: (options?.rating as 'G' | 'PG-13' | 'R-18' | 'R-21') || 'G', // 使用传入的评级或默认全年龄
+        isAdult: options?.isAdult || false
       }
       
       // 保存到数据库

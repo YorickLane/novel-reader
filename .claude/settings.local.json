@@ -1,7 +1,28 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(ls:*)",
+      "Bash(npm install:*)",
+      "Bash(claude mcp add:*)",
+      "Bash(pkill:*)",
+      "Bash(npm run dev:*)",
+      "Bash(npx playwright:*)",
+      "WebFetch(domain:executeautomation.github.io)",
+      "WebFetch(domain:github.com)",
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:tailwindcss.com)",
+      "Bash(rm:*)",
+      "Bash(rg:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(open http://localhost:5175/)",
+      "Bash(open http://localhost:5175/dev-reader)",
+      "Bash(grep:*)",
+      "Bash(npm run lint)"
     ],
     "deny": []
   }

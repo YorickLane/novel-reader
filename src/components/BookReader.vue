@@ -162,10 +162,13 @@ import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useReadingProgress } from '@/composables/useReadingProgress'
 import { db, type Book, type Chapter } from '@/services/database'
+import { ContentEncryption } from '@/utils/encryption'
+import { usePrivacyStore } from '@/stores/privacy'
 
 const route = useRoute()
 const router = useRouter()
 const bookId = parseInt(route.params.id as string)
+const privacyStore = usePrivacyStore()
 
 // 状态
 const currentBook = ref<Book | null>(null)
@@ -214,27 +217,65 @@ const readerStyles = computed(() => {
   }
 })
 
+// 添加响应式的解密内容
+const decryptedContent = ref<string>('')
+
 const formattedContent = computed(() => {
   if (!currentChapterData.value) return ''
   
+  // 使用解密后的内容，如果没有解密则使用原始内容
+  const content = decryptedContent.value || currentChapterData.value.content
+  
   // 将换行符转换为段落
-  return currentChapterData.value.content
+  return content
     .split('\n')
     .filter(line => line.trim())
     .map(line => `<p class="mb-4">${line}</p>`)
     .join('')
 })
 
+// 解密章节内容
+const decryptChapterContent = async () => {
+  if (!currentChapterData.value) return
+  
+  console.log('[BookReader] 解密章节内容:', {
+    章节标题: currentChapterData.value.title,
+    是否加密: currentChapterData.value.isEncrypted,
+    有密码: !!privacyStore.authPassword,
+    内容前50字符: currentChapterData.value.content.substring(0, 50)
+  })
+  
+  // 如果章节是加密的，并且用户已认证
+  if (currentChapterData.value.isEncrypted && privacyStore.authPassword) {
+    try {
+      const decrypted = await ContentEncryption.unpackAndDecrypt(
+        currentChapterData.value.content,
+        privacyStore.authPassword
+      )
+      decryptedContent.value = decrypted
+      console.log('[BookReader] 解密成功，内容长度:', decrypted.length)
+    } catch (error) {
+      console.error('解密章节内容失败:', error)
+      decryptedContent.value = '内容解密失败，请检查密码是否正确'
+    }
+  } else {
+    // 非加密内容直接清空解密内容
+    decryptedContent.value = ''
+    console.log('[BookReader] 章节未加密或未认证，使用原始内容')
+  }
+}
+
 // 方法
 const loadBook = async () => {
   try {
-    currentBook.value = await db.books.get(bookId)
+    currentBook.value = await db.books.get(bookId) || null
     chapters.value = await db.chapters
       .where('bookId')
       .equals(bookId)
       .sortBy('chapterIndex')
     
     await loadProgress()
+    await decryptChapterContent() // 加载后立即尝试解密当前章节
   } catch (error) {
     console.error('加载书籍失败:', error)
     router.push('/')
@@ -278,8 +319,9 @@ const scrollToTop = async () => {
   }
 }
 
-// 监听章节变化，恢复滚动位置
+// 监听章节变化，恢复滚动位置并解密内容
 watch(currentChapter, async () => {
+  await decryptChapterContent() // 切换章节时解密内容
   await nextTick()
   if (contentRef.value && scrollPosition.value > 0) {
     contentRef.value.scrollTop = scrollPosition.value

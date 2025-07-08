@@ -22,6 +22,31 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue'),
     },
+    {
+      path: '/import',
+      name: 'import',
+      component: () => import('../views/ImportView.vue'),
+    },
+    {
+      path: '/batch-import',
+      name: 'batch-import',
+      component: () => import('../views/BatchImportView.vue'),
+    },
+    {
+      path: '/test-import',
+      name: 'test-import',
+      component: () => import('../views/TestImportView.vue'),
+    },
+    {
+      path: '/dev-reader',
+      name: 'dev-reader',
+      component: () => import('../components/DevReader.vue'),
+    },
+    {
+      path: '/characters',
+      name: 'characters',
+      component: () => import('../views/CharacterGallery.vue'),
+    },
   ],
 })
 

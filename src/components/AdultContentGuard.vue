@@ -1,6 +1,6 @@
 <template>
-  <div class="h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full mx-4">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" @click.self="$emit('cancel')">
+    <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full mx-4 relative" data-testid="adult-content-guard">
       <!-- 锁定图标 -->
       <div class="flex justify-center mb-6">
         <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
@@ -135,13 +135,16 @@ const showForgotPassword = ref(false)
 
 // 检查是否首次使用
 onMounted(async () => {
+  console.log('[AdultContentGuard] 组件已挂载')
   const settings = await db.settings.get('adultContentPassword')
   isFirstTime.value = !settings
+  console.log('[AdultContentGuard] 是否首次使用:', isFirstTime.value)
 })
 
 const handleSubmit = async () => {
   if (!password.value) return
 
+  console.log('[AdultContentGuard] 提交密码验证')
   error.value = ''
   loading.value = true
 
@@ -150,25 +153,30 @@ const handleSubmit = async () => {
     
     if (isFirstTime.value) {
       // 首次使用，设置密码
+      console.log('[AdultContentGuard] 首次使用，设置新密码')
       const hashedPassword = await ContentEncryption.hashPassword(password.value)
       await db.settings.put({
         key: 'adultContentPassword',
         value: hashedPassword
       })
+      console.log('[AdultContentGuard] 密码设置成功，触发成功事件')
       emit('success', password.value)
     } else {
       // 验证密码
+      console.log('[AdultContentGuard] 验证已有密码')
       const hashedPassword = await ContentEncryption.hashPassword(password.value)
       if (settings?.value === hashedPassword) {
+        console.log('[AdultContentGuard] 密码验证成功，触发成功事件')
         emit('success', password.value)
       } else {
+        console.log('[AdultContentGuard] 密码验证失败')
         error.value = '密码错误，请重试'
         password.value = ''
       }
     }
   } catch (err) {
     error.value = '验证失败，请稍后重试'
-    console.error('密码验证错误:', err)
+    console.error('[AdultContentGuard] 密码验证错误:', err)
   } finally {
     loading.value = false
   }

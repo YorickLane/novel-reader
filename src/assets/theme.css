@@ -1,0 +1,12 @@
+@import 'tailwindcss/theme' layer(theme);
+@import './base.css' layer(base);
+@import 'tailwindcss' layer(utilities);
+
+@layer theme {
+  :root {
+    /* 自定义颜色配置 */
+    --color-primary: #3b82f6;
+    --color-secondary: #8b5cf6;
+    --color-accent: #ec4899;
+  }
+}
