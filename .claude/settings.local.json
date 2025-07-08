@@ -22,7 +22,9 @@
       "Bash(open http://localhost:5175/)",
       "Bash(open http://localhost:5175/dev-reader)",
       "Bash(grep:*)",
-      "Bash(npm run lint)"
+      "Bash(npm run lint)",
+      "Bash(sed:*)",
+      "Bash(npx tsc:*)"
     ],
     "deny": []
   }
