@@ -233,11 +233,7 @@ const unlockedCharacters = ref<string[]>([])
 // 角色分类
 const roles = [
   { value: 'all', label: '全部' },
-  { value: '主角', label: '主角' },
-  { value: '都市归来者', label: '都市归来' },
-  { value: '村霸', label: '村霸' },
-  { value: '书生', label: '书生' },
-  { value: '技术员', label: '技术员' }
+  { value: '主角', label: '主角' }
 ]
 
 // 过滤角色

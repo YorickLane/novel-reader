@@ -70,6 +70,27 @@ npm run format
 - 数据持久化使用 IndexedDB，通过 Dexie.js 操作
 - 组件使用 Vue 3 Composition API + `<script setup>` 语法
 
+## 内容同步自动化
+
+### 章节内容管理
+- 章节内容存储在 `/content-private/stories/drafts/` 目录下的 Markdown 文件中
+- 使用自动同步脚本 `/scripts/sync-chapters.js` 来生成 `quickImport.ts`
+- **重要**: 不要手动修改 `src/utils/quickImport.ts`，该文件由脚本自动生成
+
+### 同步脚本使用
+```bash
+# 单次同步
+node scripts/sync-chapters.js
+
+# 监听模式，文件变化时自动同步
+node scripts/sync-chapters.js --watch
+```
+
+### 章节文件命名规范
+- 格式：`第XX章_标题.md`
+- 示例：`第01章_归乡重逢.md`、`第02章_久别重逢.md`
+- 脚本会按章节编号自动排序
+
 ## 内容创作指导
 - 本项目支持成人向文学内容的创作和展示
 - 创作时应注重人物心理刻画和情感发展的真实性
