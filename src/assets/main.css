@@ -1,1 +1,8 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+/* 自定义 z-index 值用于模态框 */
+@theme {
+  --z-modal: 9999;
+  --z-modal-backdrop: 9998;
+  --z-tooltip: 10000;
+}

@@ -3,16 +3,18 @@
     <Transition name="modal">
       <div 
         v-if="modelValue" 
-        class="fixed inset-0 z-50 overflow-y-auto"
+        class="fixed inset-0 z-[9999] overflow-y-auto modal-backdrop"
+        style="z-index: 9999;"
         @click="handleBackdropClick"
       >
         <!-- 背景遮罩 -->
-        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity"></div>
+        <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" style="z-index: 9998;"></div>
         
         <!-- 内容容器 -->
-        <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="flex items-center justify-center min-h-screen p-4 modal-container" style="position: relative; z-index: 10000;">
           <div 
-            class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+            class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden relative modal-content"
+            style="z-index: 10001;"
             @click.stop
           >
             <!-- 头部 -->
@@ -340,7 +342,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import type { Character } from '@/types/character'
 
 interface Props {
@@ -390,6 +392,7 @@ const handleBackdropClick = (event: MouseEvent) => {
 </script>
 
 <style scoped>
+/* 模态框过渡动画 */
 .modal-enter-active,
 .modal-leave-active {
   transition: opacity 0.3s ease;
@@ -411,5 +414,39 @@ const handleBackdropClick = (event: MouseEvent) => {
 
 .modal-leave-to .bg-white {
   transform: scale(0.9);
+}
+
+/* 备用样式 - 确保在 Tailwind 失效时仍能显示 */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+.modal-content {
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 56rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  z-index: 10001;
+}
+
+.modal-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+  position: relative;
+  z-index: 10000;
 }
 </style>
