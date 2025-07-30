@@ -25,7 +25,10 @@
       "Bash(npm run lint)",
       "Bash(sed:*)",
       "Bash(npx tsc:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(mv:*)",
+      "Bash(mcp list:*)",
+      "Bash(claude mcp:*)"
     ],
     "deny": []
   }
