@@ -23,7 +23,7 @@
             class="flex-1 px-3 py-2 border border-purple-300 rounded-lg"
           >
           <button
-            @click="quickImportShenZhenDream"
+            @click="quickImportXiangYu"
             :disabled="loading || !quickImportPassword"
             class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-300 transition-colors"
           >
@@ -244,7 +244,7 @@ const processFiles = async (files: File[]) => {
 }
 
 // 快速导入乡欲
-const quickImportShenZhenDream = async () => {
+const quickImportXiangYu = async () => {
   loading.value = true
   message.value = ''
   

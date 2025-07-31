@@ -28,7 +28,8 @@
       "Bash(npm run build:*)",
       "Bash(mv:*)",
       "Bash(mcp list:*)",
-      "Bash(claude mcp:*)"
+      "Bash(claude mcp:*)",
+      "Bash(npm run sync:*)"
     ],
     "deny": []
   }

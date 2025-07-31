@@ -66,30 +66,3 @@ export async function importPrivateBook(
   }
 }
 
-/**
- * 示例：导入《深圳梦》
- */
-export async function importShenZhenDream() {
-  const chapters = [
-    {
-      title: "第一章 南下列车",
-      content: `2018年春节刚过，广西田东县的汽车站里人头攒动...` // 这里放完整内容
-    },
-    {
-      title: "第二章 城中村的夜", 
-      content: `从罗湖到福田，地铁里挤满了下班的人群...` // 这里放完整内容
-    }
-  ]
-  
-  return importPrivateBook(
-    "深圳梦",
-    "陈宇的故事",
-    chapters,
-    {
-      rating: 'R-18',
-      isAdult: true,
-      encrypt: true,
-      password: 'your-content-password' // 使用你的密码
-    }
-  )
-}

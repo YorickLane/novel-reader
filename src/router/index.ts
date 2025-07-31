@@ -33,11 +33,6 @@ const router = createRouter({
       component: () => import('../views/BatchImportView.vue'),
     },
     {
-      path: '/test-import',
-      name: 'test-import',
-      component: () => import('../views/TestImportView.vue'),
-    },
-    {
       path: '/dev-reader',
       name: 'dev-reader',
       component: () => import('../components/DevReader.vue'),
