@@ -6,7 +6,7 @@
         <div class="flex items-center justify-between">
           <div>
             <h1 class="text-3xl font-bold mb-2">人物图鉴</h1>
-            <p class="text-lg opacity-90">《乡欲》主要角色档案</p>
+            <p class="text-lg opacity-90">《神陆纪元》主要角色档案</p>
           </div>
           <button
             @click="router.back()"

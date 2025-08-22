@@ -10,9 +10,9 @@
     <div v-else>
       <!-- 快速导入区域 -->
       <div class="bg-purple-50 p-6 rounded-lg mb-6">
-        <h3 class="text-lg font-semibold mb-4 text-purple-800">快速导入《乡欲》</h3>
+        <h3 class="text-lg font-semibold mb-4 text-purple-800">快速导入《神陆纪元》</h3>
         <p class="text-purple-700 mb-4">
-          直接导入已创作的《乡欲》第一章内容
+          直接导入已创作的《神陆纪元》章节内容
         </p>
         
         <div class="flex items-center space-x-4">
@@ -23,7 +23,7 @@
             class="flex-1 px-3 py-2 border border-purple-300 rounded-lg"
           >
           <button
-            @click="quickImportXiangYu"
+            @click="quickImportShenLuJiYuan"
             :disabled="loading || !quickImportPassword"
             class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-300 transition-colors"
           >
@@ -179,7 +179,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePrivacyStore } from '@/stores/privacy'
 import { importPrivateBook } from '@/utils/importPrivateContent'
-import { xiangYuData } from '@/utils/quickImport'
+import { shenLuJiYuanData } from '@/utils/quickImport'
 
 const router = useRouter()
 const privacyStore = usePrivacyStore()
@@ -244,15 +244,15 @@ const processFiles = async (files: File[]) => {
 }
 
 // 快速导入乡欲
-const quickImportXiangYu = async () => {
+const quickImportShenLuJiYuan = async () => {
   loading.value = true
   message.value = ''
   
   try {
     await importPrivateBook(
-      xiangYuData.title,
-      xiangYuData.author,
-      xiangYuData.chapters,
+      shenLuJiYuanData.title,
+      shenLuJiYuanData.author,
+      shenLuJiYuanData.chapters,
       {
         rating: 'R-18',
         isAdult: true,
@@ -262,7 +262,7 @@ const quickImportXiangYu = async () => {
     )
     
     success.value = true
-    message.value = `《${xiangYuData.title}》导入成功！共 ${xiangYuData.chapters.length} 章。3秒后返回书架...`
+    message.value = `《${shenLuJiYuanData.title}》导入成功！共 ${shenLuJiYuanData.chapters.length} 章。3秒后返回书架...`
     
     setTimeout(() => {
       router.push('/')

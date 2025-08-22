@@ -8,9 +8,9 @@
     
     <div v-else class="space-y-4">
       <div class="bg-white p-6 rounded-lg shadow">
-        <h3 class="text-lg font-semibold mb-4">导入《乡欲》</h3>
+        <h3 class="text-lg font-semibold mb-4">导入《神陆纪元》</h3>
         <p class="text-gray-600 mb-4">
-          这将导入《乡欲》章节内容到阅读器中。
+          这将导入《神陆纪元》章节内容到阅读器中。
         </p>
         
         <div class="mb-4">
@@ -26,7 +26,7 @@
         </div>
         
         <button
-          @click="importXiangYu"
+          @click="importShenLuJiYuan"
           :disabled="loading || !contentPassword"
           class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-300"
         >
@@ -50,7 +50,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { usePrivacyStore } from '@/stores/privacy'
 import { importPrivateBook } from '@/utils/importPrivateContent'
-import { xiangYuData } from '@/utils/quickImport'
+import { shenLuJiYuanData } from '@/utils/quickImport'
 
 const router = useRouter()
 const privacyStore = usePrivacyStore()
@@ -60,15 +60,15 @@ const contentPassword = ref('')
 const message = ref('')
 const success = ref(false)
 
-const importXiangYu = async () => {
+const importShenLuJiYuan = async () => {
   loading.value = true
   message.value = ''
   
   try {
     await importPrivateBook(
-      xiangYuData.title,
-      xiangYuData.author,
-      xiangYuData.chapters,
+      shenLuJiYuanData.title,
+      shenLuJiYuanData.author,
+      shenLuJiYuanData.chapters,
       {
         rating: 'R-18',
         isAdult: true,

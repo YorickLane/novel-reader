@@ -45,7 +45,7 @@
       <button
         @click="router.push('/dev-reader')"
         class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded inline-flex items-center transition-colors"
-        title="开发模式：直接查看《乡欲》"
+        title="开发模式：直接查看《神陆纪元》"
       >
         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />

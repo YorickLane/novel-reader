@@ -29,7 +29,9 @@
       "Bash(mv:*)",
       "Bash(mcp list:*)",
       "Bash(claude mcp:*)",
-      "Bash(npm run sync:*)"
+      "Bash(npm run sync:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(touch:*)"
     ],
     "deny": []
   }
