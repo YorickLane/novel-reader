@@ -15,13 +15,13 @@ const __dirname = path.dirname(__filename);
 // 配置
 const CONFIG = {
   // 章节文件目录
-  chaptersDir: path.join(__dirname, '../content-private/stories/drafts/神陆纪元/chapters'),
+  chaptersDir: path.join(__dirname, '../content-private/stories/drafts/乡欲/chapters'),
   // 输出文件
   outputFile: path.join(__dirname, '../src/utils/quickImport.ts'),
   // 书籍信息
   bookInfo: {
-    title: '神陆纪元',
-    author: '苍玄道人'
+    title: '乡欲',
+    author: '荔湾村往事'
   }
 };
 
@@ -105,7 +105,7 @@ export interface QuickImportData {
 /**
  * 《${CONFIG.bookInfo.title}》
  */
-export const shenLuJiYuanData: QuickImportData = {
+export const xiangYuData: QuickImportData = {
   title: "${CONFIG.bookInfo.title}",
   author: "${CONFIG.bookInfo.author}",
   chapters: [
